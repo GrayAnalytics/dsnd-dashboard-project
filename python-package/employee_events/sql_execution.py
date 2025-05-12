@@ -5,25 +5,45 @@ import pandas as pd
 
 # Using pathlib, create a `db_path` variable
 # that points to the absolute path for the `employee_events.db` file
-#### YOUR CODE HERE
+db_path = Path(__file__).parent / 'employee_events.db'
+#db_path = Path('./employee_events.db')
+
+
+
+
+# connect to the database
+conn = connect(db_path, check_same_thread=False)
 
 
 # OPTION 1: MIXIN
 # Define a class called `QueryMixin`
 class QueryMixin:
+    #db_path = Path('./employee_events.db')
+    conn = connect(db_path, check_same_thread=False)
+
+
     
     # Define a method named `pandas_query`
     # that receives an sql query as a string
     # and returns the query's result
     # as a pandas dataframe
-    #### YOUR CODE HERE
+    def pandas_query(self, sql_query):
+
+        result = pd.read_sql(sql_query, self.conn)
+        return result
+    
+
 
     # Define a method named `query`
     # that receives an sql_query as a string
     # and returns the query's result as
     # a list of tuples. (You will need
     # to use an sqlite3 cursor)
-    #### YOUR CODE HERE
+    def query(self, sql_query):
+        cursor = self.conn.cursor()
+        cursor.execute(sql_query)
+        result = cursor.fetchall()
+        return result
     
 
  
@@ -44,3 +64,9 @@ def query(func):
         return result
     
     return run_query
+
+
+
+## blag = QueryMixin()
+## print( blag.pandas_query(''' select * from notes''').head()  )
+
