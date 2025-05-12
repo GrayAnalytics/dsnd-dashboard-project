@@ -1,3 +1,5 @@
+## to do, improve documentation
+
 from fasthtml.common import *
 import matplotlib.pyplot as plt
 import pandas as pd
